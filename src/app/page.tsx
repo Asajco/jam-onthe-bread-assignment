@@ -1,103 +1,90 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState } from "react";
+import { WalletData } from "./types/types";
+import NftGallery from "@/compontents/NtfGallery";
+import Filters from "@/compontents/Filters";
+import { LuWallet } from "react-icons/lu";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [walletData, setWalletData] = useState<WalletData | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const address = process.env.NEXT_PUBLIC_WALLET_ADDRESS || "";
+
+  const fetchWalletData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/wallet?address=${address}`);
+      const data = await response.json();
+      setWalletData(data);
+      console.log("Wallet Data:", data);
+    } catch (error) {
+      console.error("Error fetching wallet data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const copyAddressToClipboard = () => {
+    navigator.clipboard.writeText(address);
+    setShowNotification(true);
+
+    // Hide notification after 3 seconds
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 3000);
+  };
+
+  useEffect(() => {
+    fetchWalletData();
+  }, []);
+
+  return (
+    <div className="relative">
+      {showNotification && (
+        <div className="fixed top-2 right-2 md:top-4 md:right-4 bg-green-100 border border-green-400 text-green-700 px-3 py-2 md:px-4 md:py-3 rounded shadow-md z-50 transition-opacity duration-300 max-w-[90%] md:max-w-md">
+          <strong className="font-bold text-sm md:text-base">Success!</strong>
+          <span className="block text-sm md:text-base">
+            {" "}
+            Wallet address copied to clipboard.
+          </span>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+      )}
+      <div className="p-4 md:p-8 flex flex-col sm:flex-row items-center justify-between border-b border-black">
+        <h1 className="text-xl md:text-[2rem] text-black font-black mb-4 sm:mb-0">
+          Cardano NFT
+        </h1>
+        <div className="flex gap-4 md:gap-[2rem] items-center">
+          <LuWallet
+            size={32}
+            className="border-2 border-gray-300 rounded-md p-[6px] cursor-pointer hover:bg-gray-100 transition-all duration-300 hover:scale-110"
+            onClick={copyAddressToClipboard}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <p className="text-black font-black p-2 rounded-md bg-gray-100 text-sm md:text-base truncate max-w-[150px] md:max-w-none">
+            {walletData?.balance.lovelace
+              ? `Lovelace: ${walletData?.balance.lovelace}`
+              : "0"}
+          </p>
+        </div>
+      </div>
+
+      {loading ? (
+        <div className="mt-4 text-center">
+          <div className="w-5 h-5 md:w-6 md:h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin inline-block mr-2"></div>
+          <span className="text-sm md:text-base">Loading wallet data...</span>
+        </div>
+      ) : (
+        <div className="flex flex-col md:flex-row">
+          <div className=" ">
+            <Filters />
+          </div>
+          <div className="w-full ">
+            {walletData && <NftGallery nfts={walletData.nfts} />}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
