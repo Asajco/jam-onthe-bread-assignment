@@ -8,7 +8,6 @@ const Filters = () => {
         <input type="checkbox" className="toggle" />
       </div>
 
-      {/* Type Filter */}
       <div className="mb-4">
         <h3 className="font-semibold mb-2">Type</h3>
         <input
@@ -32,7 +31,6 @@ const Filters = () => {
         </div>
       </div>
 
-      {/* Material Filter */}
       <div className="mb-4">
         <h3 className="font-semibold mb-2">Material</h3>
         <div className="space-y-1">

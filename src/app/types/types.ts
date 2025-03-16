@@ -1,4 +1,3 @@
-// Adjusted to match the actual response from Blockfrost API
 export type AssetDetails = {
   asset: string;
   policy_id: string;

@@ -31,7 +31,6 @@ export default function Home() {
     navigator.clipboard.writeText(address);
     setShowNotification(true);
 
-    // Hide notification after 3 seconds
     setTimeout(() => {
       setShowNotification(false);
     }, 3000);
