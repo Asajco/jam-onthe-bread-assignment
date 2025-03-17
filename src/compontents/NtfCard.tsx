@@ -16,7 +16,7 @@ const NFTCard = ({ nft }: { nft: AssetDetails }) => {
   const number = name.split("#")[1];
 
   return (
-    <div className="w-64 min-h-90 border-2 border-gray-200 overflow-hidden bg-white shadow-md">
+    <div className="w-64 min-h-80 border-2 border-gray-200 overflow-hidden bg-white shadow-md">
       <div className="flex justify-between items-center p-2 border-b-2 bg-gray-100">
         <span className="font-black text-lg uppercase">
           {name.split("#")[0]}
@@ -27,15 +27,17 @@ const NFTCard = ({ nft }: { nft: AssetDetails }) => {
       </div>
       <div className="bg-gray-50 p-4 flex justify-center">
         {formattedImageUrl ? (
-          <Image
-            src={formattedImageUrl}
-            alt={name}
-            width={220}
-            height={220}
-            className="rounded-lg"
-          />
+          <div className="w-56 h-56 relative">
+            <Image
+              src={formattedImageUrl}
+              alt={name}
+              fill
+              style={{ objectFit: "contain" }}
+              className="rounded-lg"
+            />
+          </div>
         ) : (
-          <div className="flex items-center justify-center h-56 w-56 bg-gray-300">
+          <div className="flex items-center justify-center h-30 w-30 bg-gray-300 rounded-lg">
             <span className="text-gray-500 font-bold">No Image</span>
           </div>
         )}

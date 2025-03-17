@@ -2,7 +2,7 @@ import React from "react";
 
 const Filters = () => {
   return (
-    <div className="p-4 w-64 border-r hidden md:block min-h-screen">
+    <div className="p-4 w-64 border-r hidden md:block h-full">
       <div className="flex items-center justify-between mb-4">
         <span className="font-semibold">NFT&apos;s</span>
         <input type="checkbox" className="toggle" />
