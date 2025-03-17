@@ -48,7 +48,7 @@ const NtfGallery = ({ nfts }: NftGallery) => {
         </div>
       </div>
       <div className="w-full h-[1px] bg-black" />
-      <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 p-4">
+      <div className="flex flex-wrap items-center justify-center md:justify-center gap-6 p-4">
         {nfts.map((nft) => (
           <NFTCard key={nft.asset} nft={nft} />
         ))}

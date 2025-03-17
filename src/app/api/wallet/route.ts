@@ -30,7 +30,6 @@ export async function GET(request: NextRequest) {
     const nftDetails = await Promise.all(
       (addressData.amount || [])
         .filter((asset: AddressAmount) => asset.unit !== "lovelace")
-        .slice(0, 5)
         .map(async (asset: AddressAmount) => {
           return api.assetsById(asset.unit);
         })
